@@ -1,9 +1,15 @@
 # github-mirror-user 🚀
 
-A small **Docker Compose** setup to periodically mirror all repositories of a GitHub user and make them available with a high-performance git frontend, [Forgejo](https://forgejo.org/).
+A small **Docker Compose** setup to periodically mirror all repositories, public & private, of your GitHub account and make them available with a high-performance git frontend, [Forgejo](https://forgejo.org/).
 
-> \[!NOTE]
+> [!NOTE]
 > This project can **only** be installed with Docker Compose. You may use Docker alone, but you'll have to manually create the commands.
+
+## Features ✨
+
+* Periodic mirroring of **all** repositories, public and private of a GitHub account you have access.
+* Nice and lightweight git frontend.
+* Optional simple Discord webhook error logging.
 
 ## Installation 🛠️
 
@@ -15,7 +21,7 @@ A small **Docker Compose** setup to periodically mirror all repositories of a Gi
 ```bash
 git clone https://github.com/Urpagin/github-mirror-user.git
 cd github-mirror-user
-```
+```  
 
 2. Initialize the frontend 🌐
 
@@ -29,9 +35,9 @@ sudo docker compose up -d server
 
 Visit [http://127.0.0.1:64175](http://127.0.0.1:64175) (replace with your machine's IP) and follow the instructions.
 
-2.3 Create your token
+2.3 Create your Forgejo token
 
-Generate your token (see instructions in the `.env` file) and place it in the `.env` file.
+Generate your Forgejo token (see instructions in the `.env` file) and place it in the `.env` file.
 
 3. Populate fully the `.env` file 📄
 
@@ -45,10 +51,15 @@ sudo docker compose up -d
 
 5. Verify & Enjoy 🎉
 
-Wait for the cronjob to run (you can modify the cron interval by changing the startup command of the cron container in the `docker-compose.yml` file; make sure to force recreate the containers afterward).
+Wait for the cronjob to run (you can [modify the cron interval](https://crontab.guru/) by changing the startup command of the cron container in the `docker-compose.yml` file; make sure to force recreate the containers afterward).
 
+You can check the logs of all the containers interactively using this command:
 ```bash
 docker compose up -d --force-recreate
+```
+
+```bash
+sudo docker compose logs -f
 ```
 
 ## Containers 📦
@@ -65,6 +76,11 @@ Forgejo is similar to GitLab, Gitea, or Gogs. It's written in Go and designed to
 ### Alpine (cron)
 
 We run the cron daemon in a small Alpine Linux container to periodically execute the mirroring script (`crontab_script.sh`). ⏰
+
+## Small Behaviour Explanation
+
+If you receive a code 55 from the Discord webhook, it means the `crontab_script.sh` script is running
+and it is ran once more, almost making them overlap, if not for the lockfile logic on top of the script.
 
 ## Security 🔒
 
