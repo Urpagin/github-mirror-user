@@ -1,0 +1,41 @@
+networks:
+  forgejo:
+    external: false
+
+services:
+  server:
+    image: codeberg.org/forgejo/forgejo:12
+    container_name: forgejo
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    restart: unless-stopped
+    networks:
+      - forgejo
+    volumes:
+      - ./forgejo_data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - '64175:3000'
+      # We don't want to export an SSH port.
+      #- '222:22'
+
+  cron:
+    image: alpine:latest
+    container_name: cron-forgejo
+    restart: unless-stopped
+    env_file:
+      - '.env'
+    volumes:
+      - ./crontab_script.sh:/bin/crontab_script:ro
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache bash git github-cli curl jq
+        chmod +x /bin/crontab_script
+        echo '* * * * * /bin/crontab_script' | crontab -
+        crond -f -d 8
+    networks:
+      - forgejo

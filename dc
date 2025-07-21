@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# A development script to quickly recreate the containers
+# and attach to the logs.
+
+sudo docker compose down
+
+sudo docker compose up -d --build --force-recreate
+
+sudo docker compose logs -f
