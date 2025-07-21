@@ -1,24 +1,72 @@
-# blablabla bliblibli bloubloublou
+# github-mirror-user 🚀
 
-project desc
+A small **Docker Compose** setup to periodically mirror all repositories of a GitHub user and make them available with a high-performance git frontend, [Forgejo](https://forgejo.org/).
 
-## Installation (Docker only)
+> \[!NOTE]
+> This project can **only** be installed with Docker Compose. You may use Docker alone, but you'll have to manually create the commands.
 
-install setps
+## Installation 🛠️
 
-## Containers
+> \[!TIP]
+> Please follow the instructions carefully. They may feel out of order, but the `.env` file needs to be populated with both a GitHub token **and** a Forgejo token.
+
+1. Clone the repository 📂
+
+```bash
+git clone https://github.com/Urpagin/github-mirror-user.git
+cd github-mirror-user
+```
+
+2. Initialize the frontend 🌐
+
+2.1 Launch the frontend
+
+```bash
+sudo docker compose up -d server
+```
+
+2.2 Create the admin account
+
+Visit [http://127.0.0.1:64175](http://127.0.0.1:64175) (replace with your machine's IP) and follow the instructions.
+
+2.3 Create your token
+
+Generate your token (see instructions in the `.env` file) and place it in the `.env` file.
+
+3. Populate fully the `.env` file 📄
+
+Read and follow the instructions contained inside the `.env` file carefully.
+
+4. Start the containers 🐳
+
+```bash
+sudo docker compose up -d
+```
+
+5. Verify & Enjoy 🎉
+
+Wait for the cronjob to run (you can modify the cron interval by changing the startup command of the cron container in the `docker-compose.yml` file; make sure to force recreate the containers afterward).
+
+```bash
+docker compose up -d --force-recreate
+```
+
+## Containers 📦
 
 ### Forgejo
 
-explaantion on what forgejo is
+Forgejo is similar to GitLab, Gitea, or Gogs. It's written in Go and designed to be lightweight.
 
-### Alpine + cron + jq + blablablabliblibbloublboubou
+> Forgejo is a self-hosted lightweight software forge. Easy to install and low maintenance—it just does the job.
 
-what does this do..
+* 🌍 [Website](https://forgejo.org/)
+* 📥 [Source](https://codeberg.org/forgejo/forgejo)
 
+### Alpine (cron)
 
-## Security
+We run the cron daemon in a small Alpine Linux container to periodically execute the mirroring script (`crontab_script.sh`). ⏰
 
-> [!IMPORTANT]
-> Make sure the logs never leave as some logging prints out the tokens for GitHub and Forgejo!
+## Security 🔒
 
+> \[!IMPORTANT]
+> Ensure logs remain secure and private, as some logging includes sensitive tokens for GitHub and Forgejo!
