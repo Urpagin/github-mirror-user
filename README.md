@@ -79,10 +79,13 @@ We run the cron daemon in a small Alpine Linux container to periodically execute
 
 ## Small Behaviour Explanation
 
-If you receive a code 55 from the Discord webhook, it means the `crontab_script.sh` script is running
-and it is ran once more, almost making them overlap, if not for the lockfile logic on top of the script.
+If you receive a code 55 from the Discord webhook, it means the `crontab_script.sh` script is running,
+and it is run once more, almost making them overlap, if not for the lockfile logic on top of the script.
 
 ## Security 🔒
 
 > [!IMPORTANT]
 > Ensure logs remain secure and private, as some logging includes sensitive tokens for GitHub and Forgejo!
+
+The script doesn't account for deleted repositories, *yet*. Maybe Forgejo accounts for this, since all repos are of the
+"mirror" type, they might get deleted as upstream is deleted.

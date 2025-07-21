@@ -35,7 +35,7 @@ services:
       - |
         apk add --no-cache bash git github-cli curl jq
         chmod +x /bin/crontab_script
-        echo '* * * * * /bin/crontab_script' | crontab -
+        echo '* 0 * * * /bin/crontab_script' | crontab -
         crond -f -d 8
     networks:
       - forgejo
