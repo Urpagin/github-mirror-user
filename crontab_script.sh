@@ -30,6 +30,14 @@ atexit() {
 
 trap 'atexit' EXIT
 
+# Making sure there isn't another process running.
+LOCKFILE='/tmp/crontab_job.lock'
+exec 200>"$LOCKFILE"
+# Exit if already locked
+flock -n 200 || {
+  echo "WARNING: /tmp/crontab_job.lock file exists. There is probably another job running.";
+  exit 55;
+}
 
 ENV_VARS=(
   GH_USERNAME
@@ -95,7 +103,7 @@ gh auth login --hostname github.com --with-token<<<"${GH_TOKEN_}"
 #     n PRIVATE
 # and n INTERNAL
 # because we're calling gh repo list for reach visibility type.
-REPO_LIMIT=3
+REPO_LIMIT=99999999
 
 ##### --- PUBLIC MIRRORING ---
 
