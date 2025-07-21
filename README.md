@@ -13,7 +13,7 @@ A small **Docker Compose** setup to periodically mirror all repositories, public
 
 ## Installation 🛠️
 
-> \[!TIP]
+> [!TIP]
 > Please follow the instructions carefully. They may feel out of order, but the `.env` file needs to be populated with both a GitHub token **and** a Forgejo token.
 
 1. Clone the repository 📂
@@ -84,5 +84,5 @@ and it is ran once more, almost making them overlap, if not for the lockfile log
 
 ## Security 🔒
 
-> \[!IMPORTANT]
+> [!IMPORTANT]
 > Ensure logs remain secure and private, as some logging includes sensitive tokens for GitHub and Forgejo!
